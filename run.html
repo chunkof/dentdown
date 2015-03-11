@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>run</title>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="indent_den.js"></script>
+<script>
+function runIndentDen()
+{
+  var src = $("#src").val();
+  
+  var indentden = new IndentDen();
+  var dst =indentden.convert(src);
+  
+  $("#dst").val(dst);
+}
+</script>
+</head>
+<body>
+  <h1>Run "indent_den.js"</h1>
+  <input type='reset' name='ebs' value='Run->' onClick="runIndentDen()"><br>
+<textarea id="src" rows="40" cols="60">
+aaaa
+bb
+</textarea>
+  <textarea id="dst" rows="40" cols="60"></textarea><br>
+</body>
+</html>
+
+
