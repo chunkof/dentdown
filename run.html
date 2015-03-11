@@ -4,22 +4,22 @@
 <meta charset="utf-8" />
 <title>run</title>
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script src="indent_den.js"></script>
+<script src="Indedent.js"></script>
 <script>
-function runIndentDen()
+function run()
 {
   var src = $("#src").val();
   
-  var indentden = new IndentDen();
-  var dst =indentden.convert(src);
+  var indedent = new Indedent();
+  var dst =indedent.convert(src);
   
   $("#dst").val(dst);
 }
 </script>
 </head>
 <body>
-  <h1>Run "indent_den.js"</h1>
-  <input type='reset' name='ebs' value='Run->' onClick="runIndentDen()"><br>
+  <h1>Run "Indedent"</h1>
+  <input type='reset' name='ebs' value='Run->' onClick="run()"><br>
 <textarea id="src" rows="40" cols="60">
 aaaa
 bb

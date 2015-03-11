@@ -1,4 +1,4 @@
-function IndentDen(spec){
+function Indedent(spec){
     this.initialize(spec);
 };
 
@@ -6,9 +6,9 @@ function IndentDen(spec){
 "use strict";
 
 //---------------
-// IndentDen
+// Indedent
 //---------------
-IndentDen.prototype =
+Indedent.prototype =
 {
 // Initialize
     initialize:function(spec){
