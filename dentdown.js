@@ -6,6 +6,12 @@ function Dentdown(spec) {
 
 (function () {
 "use strict";
+
+var markdown_converter = null;
+if (typeof Showdown !== "undefined")
+{
+  markdown_converter = new Showdown.converter();
+}
 //---------------
 // Dentdown
 //---------------
@@ -16,7 +22,7 @@ Dentdown.prototype =
     this.config = [];
     this.config.indent =  "  ";
     this.config.line_feed = "\n";
-  },
+},
 // Public
   toMarkdown:function(src){
     var dst = "";
@@ -32,9 +38,12 @@ Dentdown.prototype =
     return dst;
   },
   toHTML:function(src){
+    if (null == markdown_converter)
+    {
+      return "[error]Showdown.js is not loaded. Showdown.js needed to make HTML.";
+    }
     var md = this.toMarkdown(src);
-    
-    return markdown.toHTML(md);
+    return markdown_converter.makeHtml(md);
   },
 // Internal
   _getLineInfo:function(line){
