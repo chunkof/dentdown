@@ -8,16 +8,16 @@ body {
 }
 #src_text {
   margin-top: 5px;
-  width:  480px;
+  width:  500px;
   height: 600px;
 }
 #dst_div {
-  margin-left: 520px;
+  margin-left: 540px;
   width: 500px;
 }
 .dst_result {
   margin-top: 5px;
-  width:  480px;
+  width:  500px;
   height: 600px;
 }
 #dst_html {

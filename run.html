@@ -8,14 +8,32 @@
 <script src="lib/markdown.min.js"></script>
 <script src="dentdown.js"></script>
 <script>
-var dst_mode = "preview";
-var dentdown = new Dentdown();
+var dst_mode     = "html";
+var dentdown     = new Dentdown();
+// onLoad
 function onLoad()
 {
+  // first run
   var src = $("#initial_src").val();
   $("#src_text").val(src);
   run();
+
+  // bind to auto run
+  var need_run = false;
+  $('#src_text').keyup(function(e) {
+    autoRun();
+  });
 }
+// auto run
+function autoRun()
+{
+  var check = $("#auto_run").prop('checked');
+  if (!check){
+    return;
+  }
+  run();
+}
+// run
 function run()
 {
   var src = $("#src_text").val();
@@ -39,6 +57,7 @@ function run()
       break;
   }
 }
+// dst mode
 function activateDstText()
 {
   $("#dst_text").show();
@@ -61,25 +80,25 @@ function changeDstMode(value)
 
   <!-- src -->
   <div id="src_div">
-    Dentdown&nbsp;&nbsp;&nbsp;
-    <!-- todo:
-    <input type="checkbox" value="1" checked="checked">Auto Run&nbsp;
-    -->
-    &nbsp;&nbsp;<input type='button' value='Run->' onClick="run()">
-    <br>
+    <strong>Dentdown</strong><br>
+    indent
+    <select name="indent">
+      <option value="tab">tab</option>
+      <option value="2spaces">2spaces</option>
+      <option value="4spaces">4spaces</option>
+    </select>&nbsp;&nbsp;
+    <input type="checkbox" id="auto_run" onClick="autoRun()" value="1" checked="checked">Auto Run&nbsp;
+    <input type='button' value='Run->' onClick="run()">
     <textarea id="src_text"></textarea>
   </div>
-
   <!-- dst -->
   <div id="dst_div">
+    <strong>Output</strong><br>
     <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="markdown">Markdown&nbsp;
-    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="html">HTML&nbsp;
-    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="preview" checked="checked">Preview&nbsp;
-    <!-- todo:
-    &nbsp;&nbsp;<input type='button' name='ebs' value='Copy to Clipbord' onClick="run()">
-    -->
-    <br>
-    <textarea id="dst_text" class="dst_result" style="display:none"></textarea>
+    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="html" checked="checked">HTML&nbsp;
+    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="preview">Preview&nbsp;
+    
+    <textarea id="dst_text" class="dst_result" readonly style="display:none" onClick="this.setSelectionRange(0, this.value.length)"></textarea>
     <div      id="dst_html" class="dst_result"></div>
   </div>
 
