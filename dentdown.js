@@ -1,13 +1,13 @@
-function Indedent(spec) {
+function DentDown(spec) {
     this.initialize(spec);
 };
 
 (function () {
 "use strict";
 //---------------
-// Indedent
+// DentDown
 //---------------
-Indedent.prototype =
+DentDown.prototype =
 {
 // Initialize
     initialize:function(spec){
