@@ -1,43 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
-<title>run</title>
-<link rel="stylesheet" type="text/css" href="styles.css">
-<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script src="../lib/markdown.min.js"></script>
-<script src="../dentdown.js"></script>
-<script src="script.js"></script>
+  <meta charset="utf-8" />
+  <title>run</title>
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <!-- lib(core) -->
+    <script src="../lib/markdown.min.js"></script>
+    <script src="../dentdown.js"></script>
+    <!-- lib(ui) -->
+    <script src="../lib_ui/jquery-2.1.3.min.js"></script>
+    <script src="../lib_ui/tabIndent.js"></script>
+    <!-- main -->
+    <script src="script.js"></script>
 </head>
+
+
 <body onLoad="onLoad()">
   <h1>Run "Dentdown"</h1>
 
-  <!-- src -->
+  <!--
+      src 
+  -->
   <div id="src_div">
     <strong>Dentdown</strong><br>
+    <!-- config -->
     indent
-    <select name="indent">
-      <option value="tab">tab</option>
+    <select name="indent_type">
       <option value="2spaces">2spaces</option>
       <option value="4spaces">4spaces</option>
+      <option value="tab">tab</option>
     </select>&nbsp;&nbsp;
+    <!-- run -->
     <input type="checkbox" id="auto_run" onClick="autoRun()" value="1" checked="checked">Auto Run&nbsp;
     <input type='button' value='Run->' onClick="run()">
+    <!-- input area -->
     <textarea id="src_text"></textarea>
   </div>
-  <!-- dst -->
+
+  <!--
+      dst
+  -->
   <div id="dst_div">
     <strong>Output</strong><br>
-    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="markdown">Markdown&nbsp;
-    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="html" checked="checked">HTML&nbsp;
-    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="preview">Preview&nbsp;
-    
+    <!-- output type -->
+    <input type="radio" name="dst_mode" onClick="run()"
+           value="markdown" checked="checked">Markdown&nbsp;
+    <input type="radio" name="dst_mode" onClick="run()"
+           value="html">HTML&nbsp;
+    <input type="radio" name="dst_mode" onClick="run()"
+           value="html">HTML<sup>es</sup>
+    <input type="radio" name="dst_mode" onClick="run()"
+           value="preview">Preview<sup>es</sup>
+    <small>(es=escaped html tags)</small>
+    <!-- output area -->
     <textarea id="dst_text" class="dst_result" readonly style="display:none" onClick="this.setSelectionRange(0, this.value.length)"></textarea>
     <div      id="dst_html" class="dst_result"></div>
   </div>
 
-  <!-- data -->
-  <textarea id="initial_src" style="display:none">
+  <!--
+      data
+  -->
+  <span style="display:none">
+  <textarea id="initial_src">
 #AAA
   #aaa
     aaa
@@ -46,6 +71,7 @@
   bbb
   bbb
   </textarea>
+  </span>
 </body>
 </html>
 

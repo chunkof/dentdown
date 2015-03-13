@@ -1,40 +1,51 @@
 "use strict";
 
-var dst_mode     = "html";
-var dentdown     = new Dentdown();
+var dentdown = new Dentdown();
+var indent_type = $('[name=indent_type]').val();
 //-----------
 // onLoad
 //-----------
 function onLoad()
 {
-  // first run
+  //--------
+  // initialize
+  //--------
   var src = $("#initial_src").val();
   $("#src_text").val(src);
-  run();
+  
+  var src_text = $("#src_text").get(0);
+  tabIndent.render(src_text);
 
-  // bind to auto run
-  var need_run = false;
+  //--------
+  // bind
+  //--------
+  // auto run
   $('#src_text').keyup(function(e) {
     autoRun();
   });
-}
-//-----------
-// auto run
-//-----------
-function autoRun()
-{
-  var check = $("#auto_run").prop('checked');
-  if (!check){
-    return;
-  }
+  // index type
+  $('[name=indent_type]').change(function() {
+    var last_type = indent_type;
+    indent_type = $('[name=indent_type]').val();
+    var indent_str = getIndentStr(indent_type);
+    dentdown.config.indent = indent_str;
+    tabIndent.config.tab   = indent_str;
+  });
+
+  //---------
+  // first run
+  //---------
   run();
 }
+(function () {
+}());
 //-----------
 // run
 //-----------
 function run()
 {
   var src = $("#src_text").val();
+  var dst_mode =  $("input[name='dst_mode']:checked").val();
   switch (dst_mode)
   {
     case "markdown":
@@ -56,7 +67,18 @@ function run()
   }
 }
 //-----------
-// dst mode
+// auto run
+//-----------
+function autoRun()
+{
+  var check = $("#auto_run").prop('checked');
+  if (!check){
+    return;
+  }
+  run();
+}
+//-----------
+// activate dst result
 //-----------
 function activateDstText()
 {
@@ -68,9 +90,18 @@ function activateDstPreview()
   $("#dst_text").hide();
   $("#dst_html").show();
 }
-function changeDstMode(value)
+//-----------
+// indent
+//-----------
+function getIndentStr(type)
 {
-  dst_mode = value;
-  run();
+  switch(type){
+    case "tab":
+      return "	"
+    case "2spaces":
+      return "  "
+    case "4spaces":
+      return "    "
+  }
+  console.log("[error]unknown indent type=" + type);
 }
-

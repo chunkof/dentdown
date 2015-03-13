@@ -1,3 +1,5 @@
+// https://github.com/chunkof
+
 function Dentdown(spec) {
   this.initialize(spec);
 };
@@ -11,24 +13,20 @@ Dentdown.prototype =
 {
 // Initialize
   initialize:function(spec){
-    this._s = [];
-    this.setSpec(spec);
+    this.config = [];
+    this.config.indent =  "  ";
+    this.config.line_feed = "\n";
   },
 // Public
-  setSpec:function(spec){
-    spec = ut.or(spec,[]);
-    this._s.indent    = ut.or(spec.indent,  "  ");
-    this._s.line_feed   = ut.or(spec.line_feed, "\n");
-  },
   toMarkdown:function(src){
     var dst = "";
-    var lines = src.split(this._s.line_feed);
+    var lines = src.split(this.config.line_feed);
     for (var i = 0; i < lines.length; i++ ) {
       var line = lines[i];
       // get param
       var line_info = this._getLineInfo(line);
       // output
-      dst += line_info.body + this._s.line_feed;
+      dst += line_info.body + this.config.line_feed;
     }
     
     return dst;
@@ -46,9 +44,9 @@ Dentdown.prototype =
     var body  = "";
     for (var i = 0; i < line.length; i++){
       stack += line.charAt(i);
-      if (stack.length == this._s.indent.length)
+      if (stack.length == this.config.indent.length)
       {
-        if (stack == this._s.indent)
+        if (stack == this.config.indent)
         {
           ++indent_count;
           stack = "";
@@ -59,7 +57,7 @@ Dentdown.prototype =
       }
     }
     // trim body
-    body = line.substring(indent_count*this._s.indent.length);
+    body = line.substring(indent_count*this.config.indent.length);
     
     // parse type
     var exist_h = body.search(/^#/);
