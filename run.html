@@ -3,24 +3,88 @@
 <head>
 <meta charset="utf-8" />
 <title>run</title>
+<link rel="stylesheet" type="text/css" href="run.css">
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="lib/markdown.min.js"></script>
 <script src="dentdown.js"></script>
 <script>
+var dst_mode = "preview";
+var dentdown = new Dentdown();
+function onLoad()
+{
+  var src = $("#initial_src").val();
+  $("#src_text").val(src);
+  run();
+}
 function run()
 {
-  var src = $("#src").val();
-  
-  var dentdown = new DentDown();
-  var dst =dentdown.convert(src);
-  
-  $("#dst").val(dst);
+  var src = $("#src_text").val();
+  switch (dst_mode)
+  {
+    case "markdown":
+        var dst =dentdown.toMarkdown(src);
+        $("#dst_text").val(dst);
+        activateDstText();
+      break;
+    case "html":
+        var dst =dentdown.toHTML(src);
+        $("#dst_text").val(dst);
+        activateDstText();
+      break;
+    case "preview":
+        var dst =dentdown.toHTML(src);
+        $("#dst_html").html(dst);
+        $("#dst_text").val(dst);
+        activateDstPreview();
+      break;
+  }
+}
+function activateDstText()
+{
+  $("#dst_text").show();
+  $("#dst_html").hide();
+}
+function activateDstPreview()
+{
+  $("#dst_text").hide();
+  $("#dst_html").show();
+}
+function changeDstMode(value)
+{
+  dst_mode = value;
+  run();
 }
 </script>
 </head>
-<body>
-  <h1>Run "dentdown"</h1>
-  <input type='reset' name='ebs' value='Run->' onClick="run()"><br>
-<textarea id="src" rows="40" cols="60">
+<body onLoad="onLoad()">
+  <h1>Run "Dentdown"</h1>
+
+  <!-- src -->
+  <div id="src_div">
+    Dentdown&nbsp;&nbsp;&nbsp;
+    <!-- todo:
+    <input type="checkbox" value="1" checked="checked">Auto Run&nbsp;
+    -->
+    &nbsp;&nbsp;<input type='button' value='Run->' onClick="run()">
+    <br>
+    <textarea id="src_text"></textarea>
+  </div>
+
+  <!-- dst -->
+  <div id="dst_div">
+    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="markdown">Markdown&nbsp;
+    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="html">HTML&nbsp;
+    <input type="radio" name="dst_mode" onClick="changeDstMode(value)" value="preview" checked="checked">Preview&nbsp;
+    <!-- todo:
+    &nbsp;&nbsp;<input type='button' name='ebs' value='Copy to Clipbord' onClick="run()">
+    -->
+    <br>
+    <textarea id="dst_text" class="dst_result" style="display:none"></textarea>
+    <div      id="dst_html" class="dst_result"></div>
+  </div>
+
+  <!-- data -->
+  <textarea id="initial_src" style="display:none">
 #AAA
   #aaa
     aaa
@@ -28,8 +92,7 @@ function run()
 #BBB
   bbb
   bbb
-</textarea>
-  <textarea id="dst" rows="40" cols="60"></textarea><br>
+  </textarea>
 </body>
 </html>
 

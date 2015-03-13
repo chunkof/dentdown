@@ -1,0 +1,26 @@
+body {
+  font-family: arial;
+}
+
+#src_div {
+  float: left;
+  width: 500px;
+}
+#src_text {
+  margin-top: 5px;
+  width:  480px;
+  height: 600px;
+}
+#dst_div {
+  margin-left: 520px;
+  width: 500px;
+}
+.dst_result {
+  margin-top: 5px;
+  width:  480px;
+  height: 600px;
+}
+#dst_html {
+  border: gray 1px solid;
+}
+
