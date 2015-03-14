@@ -48,15 +48,7 @@
     <input type="radio" name="dst_mode" onClick="chageDst('html'    ,'-'     )">HTML&nbsp;
     <input type="radio" name="dst_mode" onClick="chageDst('preview' ,'-'     )" checked>Preview&nbsp;
     <input type="radio" name="dst_mode" onClick="chageDst('preview' ,'script')">Preview<small>(escaped &lt;script&gt;)</small>
-<!--
-    <input type="radio" name="dst_mode" onClick="chageDst('html'    ,'script')">HTML&nbsp;
-    <input type="radio" name="dst_mode" onClick="chageDst('html'    ,'all'   )">HTML&nbsp;
-    <input type="radio" name="dst_mode" onClick="chageDst('preview' ,'all'   )">Preview&nbsp;
---> 
-
-    
- 
-<!-- output area -->
+    <!-- output area -->
     <textarea id="dst_text" class="dst_result" readonly style="display:none" onClick="this.setSelectionRange(0, this.value.length)"></textarea>
     <div      id="dst_html" class="dst_result"></div>
   </div>

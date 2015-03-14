@@ -140,8 +140,13 @@ function replaceSrcIndent(old_type, new_type)
   }
   $("#src_text").val(new_src);
 };
-function replaceLineIndent(line, old_str, new_str)
+function replaceLineIndent(line, old_indent, new_indent)
 {
+  var indent_count = dentdown._ut.getIndentCount(line, old_indent);
+  // trim old indent
+  line = line.substring(old_indent.length*indent_count);  
+  // add new indent
+  line = dentdown._ut.repeatStr(new_indent, indent_count) + line;
   return line;
 }
 function getIndentStr(type)

@@ -22,6 +22,7 @@ Dentdown.prototype =
     this.config = [];
     this.config.indent =  "  ";
     this.config.line_feed = "\n";
+    this._ut = ut;
 },
 // Public
   toMarkdown:function(src){
@@ -48,26 +49,9 @@ Dentdown.prototype =
 // Internal
   _getLineInfo:function(line){
     // parse indent
-    var indent_count = 0;
-    var stack = "";
-    var body  = "";
-    for (var i = 0; i < line.length; i++){
-      stack += line.charAt(i);
-      if (stack.length == this.config.indent.length)
-      {
-        if (stack == this.config.indent)
-        {
-          ++indent_count;
-          stack = "";
-          continue;
-        }
-        
-        break;
-      }
-    }
+    var indent_count = ut.getIndentCount(line, this.config.indent);
     // trim body
-    body = line.substring(indent_count*this.config.indent.length);
-    
+    var body = line.substring(indent_count*this.config.indent.length);  
     // parse type
     var exist_h = body.search(/^#/);
     if (-1 != exist_h)
@@ -87,16 +71,10 @@ Dentdown.prototype =
 };
 
 //---------------
-// Local Utility
+// Internal Utility
 //---------------
 var ut =
 {
-  or:function(spec, default_spec){
-    if (typeof spec === "undefined") {
-      return default_spec;
-    }
-    return spec;
-  },
   repeatStr:function(str, num){
     var ret = "";
     for (var i=0; i<num; ++i){
@@ -104,7 +82,26 @@ var ut =
     }
     return ret;
   },
-// end of object
+  getIndentCount:function(line, indent)
+  {
+    var indent_count = 0;
+    var stack = "";
+    for (var i = 0; i < line.length; i++)
+    {
+      stack += line.charAt(i);
+      if (stack.length == indent.length)
+      {
+        if (stack != indent)
+        {
+          break;
+        }
+        ++indent_count;
+        stack = "";
+      }
+    }
+    return indent_count;
+  },
+  // end of object
   __end__:true
 };
 
