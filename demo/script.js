@@ -2,6 +2,8 @@
 
 var dentdown = new Dentdown();
 var indent_type = $('[name=indent_type]').val();
+var dst_mode   = "preview";
+var dst_escape = "-";
 //-----------
 // onLoad
 //-----------
@@ -15,7 +17,6 @@ function onLoad()
   
   var src_text = $("#src_text").get(0);
   tabIndent.render(src_text);
-  
   updateIndent();
   
   //--------
@@ -43,32 +44,32 @@ function onLoad()
 function run()
 {
   var src = $("#src_text").val();
-  var dst_mode =  $("input[name='dst_mode']:checked").val();
-  
-  if (("html_esc"    == dst_mode) ||
-      ("preview_esc" == dst_mode))
+  switch (dst_escape)
   {
-    src = escapeHTML(src);
+  case "all":
+      src = escapeHTML(src);
+      break;
+  case "script":
+      src = escapeScriptTag(src);
+      break;
   }
   switch (dst_mode)
   {
-    case "markdown":
-        var dst =dentdown.toMarkdown(src);
-        $("#dst_text").val(dst);
-        activateDstText();
-      break;
-    case "html":
-    case "html_esc":
-        var dst =dentdown.toHTML(src);
-        $("#dst_text").val(dst);
-        activateDstText();
-      break;
-    case "preview":
-    case "preview_esc":
-        var dst =dentdown.toHTML(src);
-        $("#dst_html").html(dst);
-        activateDstPreview();
-      break;
+  case "markdown":
+      var dst =dentdown.toMarkdown(src);
+      $("#dst_text").val(dst);
+      activateDstText();
+    break;
+  case "html":
+      var dst =dentdown.toHTML(src);
+      $("#dst_text").val(dst);
+      activateDstText();
+    break;
+  case "preview":
+      var dst =dentdown.toHTML(src);
+      $("#dst_html").html(dst);
+      activateDstPreview();
+    break;
   }
 };
 //-----------
@@ -82,6 +83,15 @@ function autoRun()
   }
   run();
 };
+//-----------
+// dst mode
+//-----------
+function chageDst(mode, escape)
+{
+  dst_mode   = mode;
+  dst_escape = escape;
+  run();
+}
 //-----------
 // activate dst result
 //-----------
@@ -99,7 +109,7 @@ function activateDstPreview()
 // indent
 //-----------
 function updateIndent()
-{/*
+{
   var last_type = indent_type;
   indent_type = $('[name=indent_type]').val();
   var indent_str = getIndentStr(indent_type);
@@ -109,18 +119,31 @@ function updateIndent()
   {
     replaceSrcIndent(last_type, indent_type)
   }
-  */
+  
 };
 function replaceSrcIndent(old_type, new_type)
 {
   var old_str = getIndentStr(old_type);
   var new_str = getIndentStr(new_type);
-  var src = $("#src_text").val();
- // while(-1 != str.indexOf(old_str, 0)){
-  //  src = src.replace(old_str, new_str);
-//  }
-  $("#src_text").val(src);
+  if ((undefined == old_str) ||
+      (undefined == new_str))
+  {
+    return;
+  }
+  var src      = $("#src_text").val();
+  var new_src  = "";
+  var lines = src.split("\n");
+  for (var i = 0; i < lines.length; i++ ) {
+    var line = lines[i];
+    line = replaceLineIndent(line, old_str, new_str);
+    new_src += line + "\n";
+  }
+  $("#src_text").val(new_src);
 };
+function replaceLineIndent(line, old_str, new_str)
+{
+  return line;
+}
 function getIndentStr(type)
 {
   switch(type){
@@ -131,9 +154,16 @@ function getIndentStr(type)
     case "4spaces":
       return "    "
   }
-  
   return undefined;
 };
+//------------
+// escape
+//------------
 function escapeHTML(val) {
       return $('<div />').text(val).html();
+};
+function escapeScriptTag(val) {
+  return val
+          .replace(/<script>/g, '&lt;script&gt;')
+          .replace(/<\/script>/g, '&lt;\/script&gt;');
 };
