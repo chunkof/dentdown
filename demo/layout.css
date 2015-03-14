@@ -1,0 +1,22 @@
+#src_div {
+  float: left;
+  width: 560px;
+}
+#src_text {
+  margin-top: 5px;
+  width:  560px;
+  height: 800px;
+}
+#dst_div {
+  margin-left: 600px;
+  width: 560px;
+}
+.dst_result {
+  margin-top: 5px;
+  width:  560px;
+  height: 800px;
+}
+#dst_html {
+  border: gray 1px solid;
+}
+
